@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+uwsgi --ini uwsgi/musicplace.ini

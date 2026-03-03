@@ -1,0 +1,28 @@
+server {
+	server_name files.musicplace.vip ;
+	root /ammos/files;
+	listen 80;
+
+	location ~ /\. {
+		deny all;
+	}
+
+#	sub_filter '<video ' '<audio ';
+#	sub_filter '</video>' '</audio>';
+
+	location ~ "/(FLAC|MP3|WAV|PDF)/?" {
+#		location ~ (^/.pdf|/.flac|/.mp3|/.wav) {
+			
+		# fancyindex also requires http_addition nginx module!!!!!
+		fancyindex off;
+		include /etc/nginx/fancyindex.files.musicplace.vip.conf;
+#		sub_filter '<tr><td class="link"><a href="^(?<ml>[0-9a-zA-Z\.\/\-\_]{,255})$">$ml</a>' '<tr><td class="link"><a id="onelink" class="" href="$ml">$ml</a>';
+#		sub_filter "~^(href\=\")+(?<onelink>(http(s)?)\:\/\/[0-9a-zA-Z\.\/\-\_]*)*(\"\ title\=)+$" $onelink;
+#		sub_filter '~^\<title\>(?<title>.*)?\<\/title\>$' '$1';
+#'href="$onelink"  id="alink" title=';
+		sub_filter '" title="' '" id="alink" title="';
+		sub_filter 'tr><td class="link"><a href="~^(.*)"' 'tr><td class="link"><a href=""';
+# target="playing" title="';
+		sub_filter_once off;
+	}
+}

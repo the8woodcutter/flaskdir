@@ -1,0 +1,74 @@
+[uwsgi]
+# MAIN EXEC:
+callable = app
+plugins = /usr/lib/uwsgi/plugins/python3
+;alarm_xmpp
+virtualenv = /ammos/musicplace/venv
+chdir = /ammos/musicplace/app
+wsgi-file = musicplace.py
+http-socket = 127.17.17.17:5151
+
+# UID/GID/FILESYSTEM/BINDS
+uid = www-data
+gid = www-data
+chmod-sock = 660
+cgroup = /cgroup/musicplace
+
+# PROCESSES:
+master = true
+single-interpreter = false
+enable-threads = true
+threads = 3
+workers = 6
+processes = 1
+;max-requests = 10480
+;max-worker-lifetime = 604800
+
+# HARDENING THINGS:
+thunder-lock = true
+vacuum = true
+die-on-term = true
+pcre-jit = true
+
+# QUESTIONABLE:
+;auto-procname = true
+;reload-on-exception = true
+
+# LOGGING:
+;log-zero = true
+;log-4xx = true
+;log-5xx = true
+;log-ioerror = true
+;log-reopen = true
+;log-truncate = true
+;log-x-forwarded-for = true
+;logto = /ammos/uwsgi.log
+
+# ALARMS:
+;log-alarm = musicplace_uwsgi_errors xmpp mrbot@packets.cc;CHANGEME;memos@muc.xmpp.packets.cc
+;<xmpp:jid;password;jidtosendto>
+
+	### ===================================================
+		# LOGGING OF uWSGI:
+		;logto = /ammos/musicplace/log/uwsgi.log
+		;log-zero = true
+		;log-4xx = true
+		;log-5xx = true
+		;log-ioerror = true
+		;log-reopen = true
+		;log-truncate = true
+		;log-x-forwarded-for = true
+		;stats = 127.15.15.15:1515 --stats-http
+
+		# COMMENTED OUT DUE TO ERRORS:
+		;enable-metrics = true
+		;metrics-directory = /ammos/musicplace/log
+		;forkbomb-delay = 120
+		;never-swap = true
+		;plugins = python3, apparmor
+		;plugins = python3, encodings, requests, apparmor
+		;umask = 0027
+		;pidfile = /ammos/musicplace/musicplace.pid
+		;daemonize = /ammos/musicplace/log/daemon.log
+
+	### ===================================================
